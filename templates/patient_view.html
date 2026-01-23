@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Prescription Summary - AI Prescription Assistant{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Prescription Summary</h2>
+
+    <p><strong>Prescription ID:</strong> {{ prescription.id }}</p>
+    <p><strong>Status:</strong> <span class="status-badge status-{{ prescription.status }}">{{ prescription.status
+            }}</span></p>
+
+    {% if prescription.approved_by %}
+    <p><strong>Approved by:</strong> {{ prescription.approved_by }}</p>
+    <p><strong>Approved at:</strong> {{ prescription.approved_at }}</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h3>Prescribed Medicines</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Medicine Name</th>
+                <th>Strength</th>
+                <th>Dosage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicine in prescription.parsed_medicines %}
+            <tr>
+                <td>{{ medicine.medicine_name }}</td>
+                <td>{{ medicine.strength }}</td>
+                <td>{{ medicine.dosage }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="alert alert-info" style="margin-top: 20px;">
+        <strong>ℹ️ Patient Information:</strong><br>
+        This prescription has been reviewed and approved by a licensed pharmacist.
+        Please follow the dosage instructions carefully.
+    </div>
+
+    <a href="/" class="btn btn-primary">← Back to Home</a>
+</div>
+{% endblock %}

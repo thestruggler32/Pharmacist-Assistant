@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}Review Prescription - AI Prescription Assistant{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Review Prescription</h2>
+
+    <p><strong>Prescription ID:</strong> {{ prescription.id }}</p>
+    <p><strong>Status:</strong> <span class="status-badge status-{{ prescription.status }}">{{ prescription.status
+            }}</span></p>
+
+    <!-- Region Selector -->
+    <div class="form-group" style="margin-top: 20px;">
+        <label for="region-selector"><strong>🌍 Medicine Database Region:</strong></label>
+        <select id="region-selector" class="form-control" onchange="updateRegion(this.value)">
+            <option value="All">All Regions (10,140 medicines)</option>
+            <option value="Karnataka" selected>Karnataka (59 medicines)</option>
+            <option value="Mysore">Mysore (50 medicines)</option>
+            <option value="National">National (10,031 medicines)</option>
+        </select>
+        <small style="color: #666;">Select region to filter medicine suggestions</small>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Parsed Medicines</h3>
+
+    {% if prescription.parsed_medicines %}
+    <div class="alert alert-info">
+        <strong>Color Coding:</strong>
+        <span class="status-badge" style="background: #d4edda; color: #155724;">Green</span> High confidence (>0.8) |
+        <span class="status-badge" style="background: #fff3cd; color: #856404;">Yellow</span> Medium confidence
+        (0.5-0.8) |
+        <span class="status-badge" style="background: #f8d7da; color: #721c24;">Red</span> Low confidence (<0.5) - Must
+            correct </div>
+
+            <form method="POST" id="review-form">
+                <input type="hidden" name="selected_region" id="selected-region" value="Karnataka">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Medicine Name</th>
+                            <th>Strength</th>
+                            <th>Dosage</th>
+                            <th>Confidence</th>
+                            <th>Original Text</th>
+                            <th>Suggestions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for medicine in prescription.parsed_medicines %}
+                        <tr class="{{ medicine.risk_level }}" id="row-{{ loop.index0 }}">
+                            <td>
+                                <input type="text" name="medicine_name_{{ loop.index0 }}"
+                                    id="medicine_name_{{ loop.index0 }}" value="{{ medicine.medicine_name }}"
+                                    onkeyup="getSuggestions({{ loop.index0 }}, this.value)" required>
+                                <div id="suggestions_{{ loop.index0 }}" class="suggestions-box"></div>
+                            </td>
+                            <td>
+                                <input type="text" name="strength_{{ loop.index0 }}" value="{{ medicine.strength }}">
+                            </td>
+                            <td>
+                                <input type="text" name="dosage_{{ loop.index0 }}" value="{{ medicine.dosage }}">
+                            </td>
+                            <td>{{ "%.2f"|format(medicine.confidence) }}</td>
+                            <td><small>{{ medicine.original_text }}</small></td>
+                            <td>
+                                <button type="button" class="btn btn-secondary"
+                                    onclick="showSuggestions({{ loop.index0 }}, '{{ medicine.medicine_name }}')"
+                                    style="padding: 5px 10px; font-size: 0.85em;">
+                                    🔍 Find
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary">Save Corrections and Continue</button>
+                    <a href="/" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+
+            {% else %}
+            <div class="alert alert-warning">
+                <strong>No medicines detected.</strong> Please review the image manually or upload a clearer image.
+            </div>
+            <a href="/upload" class="btn btn-primary">Upload New Prescription</a>
+            {% endif %}
+    </div>
+
+    <style>
+        .suggestions-box {
+            position: absolute;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            margin-top: 5px;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .suggestion-item:hover {
+            background: #f0f0ff;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-name {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .suggestion-details {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .suggestion-score {
+            float: right;
+            background: #28a745;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+    </style>
+
+    <script>
+        let currentRegion = 'Karnataka';
+        let suggestionTimeout = null;
+
+        function updateRegion(region) {
+            currentRegion = region;
+            document.getElementById('selected-region').value = region;
+            console.log('Region updated to:', region);
+        }
+
+        function getSuggestions(index, query) {
+            // Clear previous timeout
+            if (suggestionTimeout) {
+                clearTimeout(suggestionTimeout);
+            }
+
+            // Hide suggestions if query is too short
+            if (query.length < 2) {
+                document.getElementById('suggestions_' + index).style.display = 'none';
+                return;
+            }
+
+            // Debounce: wait 500ms after user stops typing
+            suggestionTimeout = setTimeout(() => {
+                showSuggestions(index, query);
+            }, 500);
+        }
+
+        function showSuggestions(index, query) {
+            const suggestionsDiv = document.getElementById('suggestions_' + index);
+
+            if (!query || query.length < 2) {
+                suggestionsDiv.style.display = 'none';
+                return;
+            }
+
+            // Show loading
+            suggestionsDiv.innerHTML = '<div style="padding: 10px; text-align: center;"><div class="spinner"></div></div>';
+            suggestionsDiv.style.display = 'block';
+
+            // Fetch suggestions from backend
+            fetch(`/api/medicine-suggestions?query=${encodeURIComponent(query)}&region=${currentRegion}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.suggestions && data.suggestions.length > 0) {
+                        let html = '';
+                        data.suggestions.forEach(sug => {
+                            html += `
+                        <div class="suggestion-item" onclick="applySuggestion(${index}, '${sug.name}', '${sug.strength}')">
+                            <span class="suggestion-score">${Math.round(sug.confidence * 100)}%</span>
+                            <div class="suggestion-name">${sug.name}</div>
+                            <div class="suggestion-details">
+                                Brand: ${sug.brand} | Strength: ${sug.strength}
+                            </div>
+                        </div>
+                    `;
+                        });
+                        suggestionsDiv.innerHTML = html;
+                    } else {
+                        suggestionsDiv.innerHTML = '<div style="padding: 10px; color: #666;">No suggestions found</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching suggestions:', error);
+                    suggestionsDiv.innerHTML = '<div style="padding: 10px; color: #dc3545;">Error loading suggestions</div>';
+                });
+        }
+
+        function applySuggestion(index, name, strength) {
+            document.getElementById('medicine_name_' + index).value = name;
+            document.getElementById('strength_' + index).value = strength;
+            document.getElementById('suggestions_' + index).style.display = 'none';
+
+            // Highlight the change
+            const row = document.getElementById('row-' + index);
+            row.style.background = '#d4edda';
+            setTimeout(() => {
+                row.style.background = '';
+            }, 2000);
+        }
+
+        // Close suggestions when clicking outside
+        document.addEventListener('click', function (event) {
+            if (!event.target.closest('input') && !event.target.closest('.suggestions-box')) {
+                document.querySelectorAll('.suggestions-box').forEach(box => {
+                    box.style.display = 'none';
+                });
+            }
+        });
+    </script>
+    {% endblock %}

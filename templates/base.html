@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI Prescription Assistant{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>AI Prescription Assistant</h1>
+            {% if user %}
+            <div class="user-info">
+                Logged in as: <strong>{{ user.get('name', 'User') }}</strong> ({{ user.get('role', 'unknown') }})
+            </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="/">Home</a></li>
+                {% if user and user.get('role') == 'pharmacist' %}
+                <li><a href="/upload">Upload Prescription</a></li>
+                {% endif %}
+                {% if user and user.get('role') == 'admin' %}
+                <li><a href="/admin/users">Manage Users</a></li>
+                <li><a href="/admin/logs">Correction Logs</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="disclaimer">
+            <strong>⚠️ SAFETY DISCLAIMER:</strong> This system assists pharmacists and does not replace professional
+            medical judgment.
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}
+        <div class="card">
+            <h2>Welcome to AI Prescription Assistant</h2>
+            <p>A safety-critical handwritten prescription OCR and interpretation system with mandatory human-in-the-loop
+                verification.</p>
+
+            {% if user %}
+            {% if user.get('role') == 'pharmacist' %}
+            <p><a href="/upload" class="btn btn-primary">Upload New Prescription</a></p>
+            {% elif user.get('role') == 'admin' %}
+            <p><a href="/admin/users" class="btn btn-primary">Manage Users</a></p>
+            {% endif %}
+            {% endif %}
+        </div>
+        {% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

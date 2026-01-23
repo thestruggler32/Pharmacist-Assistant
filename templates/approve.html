@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Approve Prescription - AI Prescription Assistant{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Approve Prescription</h2>
+
+    <p><strong>Prescription ID:</strong> {{ prescription.id }}</p>
+    <p><strong>Status:</strong> <span class="status-badge status-{{ prescription.status }}">{{ prescription.status
+            }}</span></p>
+</div>
+
+<div class="card">
+    <h3>Final Medicine List</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Medicine Name</th>
+                <th>Strength</th>
+                <th>Dosage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for medicine in prescription.parsed_medicines %}
+            <tr>
+                <td>{{ medicine.medicine_name }}</td>
+                <td>{{ medicine.strength }}</td>
+                <td>{{ medicine.dosage }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <form method="POST" onsubmit="return validateApproval()">
+        <div class="alert alert-warning" style="margin-top: 20px;">
+            <strong>⚠️ Pharmacist Verification Required:</strong><br>
+            By approving, you confirm this prescription is accurate and safe to dispense.
+        </div>
+
+        <button type="submit" class="btn btn-success">✓ Approve and Finalize</button>
+        <a href="/review/{{ prescription.id }}" class="btn btn-secondary">← Back to Review</a>
+    </form>
+</div>
+{% endblock %}
