@@ -3,10 +3,14 @@ from werkzeug.utils import secure_filename
 import os
 import uuid
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 from utils.auth import role_required, get_current_user
 from utils.image_preprocessor import ImagePreprocessor
-from utils.ocr_engine import OCREngine
+from utils.ocr_engine import OCREngine, MistralOnlyEngine
 from utils.prescription_parser import PrescriptionParser
 from utils.correction_store import CorrectionStore
 from utils.correction_learner import CorrectionLearner
@@ -19,6 +23,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 preprocessor = ImagePreprocessor()
 ocr_engine = OCREngine()
+hybrid_ocr = MistralOnlyEngine()
 parser = PrescriptionParser()
 correction_store = CorrectionStore()
 correction_learner = CorrectionLearner()
@@ -48,26 +53,67 @@ def upload():
         # Check if handwriting mode is enabled
         handwriting_mode = request.form.get('handwriting_mode') == 'on'
         
+        # Check if hybrid mode is requested (Default to True for router)
+        use_hybrid = True
+        
         filename = secure_filename(file.filename)
         prescription_id = str(uuid.uuid4())
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], f"{prescription_id}_{filename}")
         file.save(filepath)
         
+        # FIX: Check file size and resize if > 2MB
+        try:
+            file_size = os.path.getsize(filepath)
+            if file_size > 2 * 1024 * 1024: # > 2MB
+                print(f"DEBUG: Large file detected ({file_size} bytes). Resizing...")
+                img = cv2.imread(filepath)
+                if img is not None:
+                    height, width = img.shape[:2]
+                    max_dim = 1800
+                    if width > max_dim or height > max_dim:
+                        scale = max_dim / max(width, height)
+                        new_width = int(width * scale)
+                        new_height = int(height * scale)
+                        img = cv2.resize(img, (new_width, new_height), interpolation=cv2.INTER_AREA)
+                        cv2.imwrite(filepath, img)
+                        print(f"DEBUG: Resized image to {new_width}x{new_height}")
+                else:
+                    print("WARNING: cv2.imread failed on uploaded file (possibly corrupt or unsupported format)")
+        except Exception as e:
+            print(f"WARNING: Error handling large file: {e}")
+
         # Use appropriate preprocessing mode
         preprocessor_mode = ImagePreprocessor(handwriting_mode=handwriting_mode)
-        preprocessed_path, quality_report = preprocessor_mode.preprocess(filepath)
-        
-        # Save preprocessed image
-        preprocessed_filename = f"{prescription_id}_preprocessed.jpg"
-        preprocessed_filepath = os.path.join(app.config['UPLOAD_FOLDER'], preprocessed_filename)
-        preprocessor_mode.save_preprocessed_image(preprocessed_path, preprocessed_filepath)
-        
-        # Run OCR
-        ocr_results = ocr_engine.extract_text(preprocessed_filepath)
-        
-        # Use lenient parser for handwriting mode
-        parser_mode = PrescriptionParser(lenient_mode=handwriting_mode)
-        parsed_medicines = parser_mode.parse(ocr_results)
+        try:
+            preprocessed_path, quality_report = preprocessor_mode.preprocess(filepath)
+            
+            # Save preprocessed image
+            preprocessed_filename = f"{prescription_id}_preprocessed.jpg"
+            preprocessed_filepath = os.path.join(app.config['UPLOAD_FOLDER'], preprocessed_filename)
+            preprocessor_mode.save_preprocessed_image(preprocessed_path, preprocessed_filepath)
+            
+            # Run OCR - use hybrid pipeline
+            if use_hybrid:
+                print("DEBUG: Using MedicalVerificationEngine (Mistral Only)")
+                # PASS ORIGINAL IMAGE to Mistral. 
+                # VLMs work better on original color images than thresholded/binarized ones.
+                # The 'filepath' is already resized in lines 64-83 if it was too large.
+                parsed_medicines = hybrid_ocr.extract_medicines(filepath)
+                
+                # We can still get raw text for storing/debugging if needed, or just extract from results
+                # For compatibility, let's just say "Structured Extraction" for ocr_results
+                ocr_results = "Processed with Mistral Vision (Structured Output)"
+            else:
+                # Legacy mode: PaddleOCR + regex parser
+                print("DEBUG: Using Legacy OCR mode")
+                ocr_results = ocr_engine.extract_text(preprocessed_filepath)
+                print(f"DEBUG: RAW OCR RESULTS: {ocr_results}")
+                parser_mode = PrescriptionParser(lenient_mode=handwriting_mode)
+                parsed_medicines = parser_mode.parse(ocr_results)
+            
+        except Exception as e:
+            print(f"ERROR: Processing failed: {e}")
+            return f"Error processing image: {e}", 400
         
         prescriptions[prescription_id] = {
             'id': prescription_id,

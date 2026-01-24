@@ -3,6 +3,14 @@ Enhanced Prescription Parser for Messy Handwritten Prescriptions
 """
 
 import re
+try:
+    from utils.medicine_matcher import MedicineMatcher
+except ImportError:
+    # Fallback for when running script directly
+    import sys
+    import os
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from utils.medicine_matcher import MedicineMatcher
 
 
 class PrescriptionParser:
@@ -52,8 +60,23 @@ class PrescriptionParser:
         )
         
         # Confidence threshold
-        self.confidence_threshold = 0.3 if lenient_mode else 0.5
-    
+        self.confidence_threshold = 0.35 if lenient_mode else 0.5
+        
+        # Initialize medicine matcher
+        try:
+            self.medicine_matcher = MedicineMatcher()
+        except Exception as e:
+            print(f"Warning: Could not initialize MedicineMatcher: {e}")
+            self.medicine_matcher = None
+            
+        # Initialize MedicalVerificationEngine
+        try:
+            from utils.ocr_engine import MedicalVerificationEngine
+            self.ocr = MedicalVerificationEngine()
+        except Exception as e:
+            print(f"Warning: Could not initialize MedicalVerificationEngine: {e}")
+            self.ocr = None
+
     def is_header_line(self, text):
         """Check if line is a header/metadata line"""
         text_lower = text.lower().strip()
@@ -72,6 +95,18 @@ class PrescriptionParser:
             return True
         
         return False
+
+    def parse_image(self, image_path):
+        """
+        Parse directly from image using MedicalVerificationEngine.
+        This provides the SOTA extraction pipeline.
+        """
+        if self.ocr:
+            print(f"DEBUG: PrescriptionParser delegating to MedicalVerificationEngine for {image_path}")
+            return self.ocr.extract_medicines(image_path)
+        else:
+            print("ERROR: MedicalVerificationEngine not initialized")
+            return []
     
     def is_medicine_line(self, text):
         """
@@ -101,7 +136,7 @@ class PrescriptionParser:
         
         return False
     
-    def extract_medicine_info(self, text, confidence):
+    def extract_medicine_info(self, text, confidence, db_match=None):
         """Extract medicine name, strength, and dosage from text"""
         try:
             # Extract all strengths (there might be multiple)
@@ -115,33 +150,39 @@ class PrescriptionParser:
             # Extract medicine name
             medicine_name = text
             
-            # Try to extract name before first strength indicator
-            if strength_matches:
-                medicine_name = text[:strength_matches[0].start()].strip()
-            elif dosage_match:
-                medicine_name = text[:dosage_match.start()].strip()
-            
-            # Clean medicine name
-            medicine_name = re.sub(r'\s+', ' ', medicine_name).strip()
-            
-            # Remove common prefixes
-            medicine_name = re.sub(r'^(inj|tab|cap|syp|susp)\s+', '', medicine_name, flags=re.IGNORECASE)
-            
-            # If medicine name is empty or too short, use original text
-            if len(medicine_name) < 2:
-                medicine_name = text.strip()
-            
+            # Use DB match if available and reliable
+            is_valid_db_match = False
+            if db_match and db_match.get('name'):
+                 medicine_name = db_match['name']
+                 if db_match.get('strength') and not strength:
+                     strength = db_match['strength']
+                 is_valid_db_match = True
+            else:
+                # heuristic extraction
+                if strength_matches:
+                    medicine_name = text[:strength_matches[0].start()].strip()
+                elif dosage_match:
+                    medicine_name = text[:dosage_match.start()].strip()
+                
+                # Clean medicine name
+                medicine_name = re.sub(r'\s+', ' ', medicine_name).strip()
+                # Remove common prefixes
+                medicine_name = re.sub(r'^(inj|tab|cap|syp|susp)\s+', '', medicine_name, flags=re.IGNORECASE)
+                
+                if len(medicine_name) < 2:
+                    medicine_name = text.strip()
+
             # Determine risk level based on confidence
             # In lenient mode, lower thresholds
             if self.lenient_mode:
-                if confidence > 0.7:
+                if is_valid_db_match or confidence > 0.7:
                     risk_level = "green"
-                elif confidence >= 0.4:
+                elif confidence >= 0.35:
                     risk_level = "yellow"
                 else:
                     risk_level = "red"
             else:
-                if confidence > 0.8:
+                if is_valid_db_match or confidence > 0.8:
                     risk_level = "green"
                 elif confidence >= 0.5:
                     risk_level = "yellow"
@@ -154,12 +195,14 @@ class PrescriptionParser:
                 "dosage": dosage,
                 "confidence": confidence,
                 "risk_level": risk_level,
-                "original_text": text
+                "original_text": text,
+                "db_match": db_match
             }
         
         except Exception as e:
             print(f"Error extracting medicine info: {e}")
             return None
+    
     
     def parse(self, ocr_results):
         """
@@ -176,6 +219,7 @@ class PrescriptionParser:
                 return []
             
             medicines = []
+            print(f"DEBUG: Parsing {len(ocr_results)} OCR lines...")
             
             for item in ocr_results:
                 try:
@@ -187,7 +231,9 @@ class PrescriptionParser:
                         continue
                     
                     # Skip very low confidence in strict mode
-                    if not self.lenient_mode and confidence < self.confidence_threshold:
+                    # Use 0.35 for lenient mode as requested
+                    threshold = 0.35 if self.lenient_mode else 0.5
+                    if not self.lenient_mode and confidence < threshold:
                         continue
                     
                     # Skip header lines
@@ -195,11 +241,23 @@ class PrescriptionParser:
                         continue
                     
                     # Process medicine lines
-                    if self.is_medicine_line(text):
-                        medicine_info = self.extract_medicine_info(text, confidence)
+                    # Always try to match against DB first if in lenient mode
+                    is_med = self.is_medicine_line(text)
+                    db_match = None
+                    
+                    if self.lenient_mode:
+                        # Try to find medicine name candidates in text
+                        # This integrates 'MediScribe' dictionary lookup approach
+                        candidates = self.medicine_matcher.find_matches(text, top_n=1)
+                        if candidates and candidates[0]['score'] > 70:
+                            db_match = candidates[0]
+                            is_med = True # Force true if we found a strong match
+                    
+                    if is_med:
+                        medicine_info = self.extract_medicine_info(text, confidence, db_match)
                         if medicine_info:
                             medicines.append(medicine_info)
-                            print(f"✓ Detected medicine: {medicine_info['medicine_name']}")
+                            print(f"✓ Detected medicine: {medicine_info['medicine_name']} (Conf: {confidence:.2f})")
                 
                 except (KeyError, TypeError, AttributeError) as e:
                     print(f"Error processing item: {e}")
@@ -211,6 +269,7 @@ class PrescriptionParser:
         except Exception as e:
             print(f"Error in parse: {e}")
             return []
+
 
 
 if __name__ == "__main__":

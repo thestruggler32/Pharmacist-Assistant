@@ -1,0 +1,22 @@
+DEBUG: Starting Pipeline Check V2
+Mistral Key present: True
+CalStudio Key present: True
+CalStudio Key (First 10 chars): pm_live_c0
+Testing on 115.jpg
+
+--- Step 1: Mistral OCR ---
+Mistral Text Preview: Manipal Hospital
+
+Dr. Shalina Ray
+BSc, MB (ENT), MRCS (London), DOHNS (London)
+ENT Consultant
+
+Vijay...
+
+--- Step 2: CalStudio Verifier ---
+Sending request to https://calstudio.com/getbackResponse...
+Status Code: 500
+Response Headers: {'Date': 'Sat, 24 Jan 2026 02:13:54 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '82', 'Connection': 'keep-alive', 'Set-Cookie': 'AWSALB=E0XRwEShSUMXglTZZcz3rJ/ovD0TcJkomElrMOJRt/EoHXOUC0VSHlIbcyG+WJ4+SX8kefzqGJ3/YTyTB5rWReyYFMNXYmThcIff0nQ8el8aiFm8tIDjr4vNnNVw; Expires=Sat, 31 Jan 2026 02:13:52 GMT; Path=/, AWSALBCORS=E0XRwEShSUMXglTZZcz3rJ/ovD0TcJkomElrMOJRt/EoHXOUC0VSHlIbcyG+WJ4+SX8kefzqGJ3/YTyTB5rWReyYFMNXYmThcIff0nQ8el8aiFm8tIDjr4vNnNVw; Expires=Sat, 31 Jan 2026 02:13:52 GMT; Path=/; SameSite=None; Secure', 'X-Powered-By': 'Express', 'Access-Control-Allow-Origin': '*', 'ETag': 'W/"52-DZyW6H1u0K5HNYvbNH1xIGSdhGw"'}
+Response Text: {"message":"Something went wrong, please try again.","success":false,"status":500}
+FAILURE: CalStudio returned non-200
+Done.

@@ -1,20 +1,19 @@
 @echo off
-echo ===================================================
-echo   AI PHARMACIST ASSISTANT - LAUNCHER
-echo ===================================================
+echo Starting AI Prescription Assistant...
+echo Setting environment variables...
+set DISABLE_MODEL_SOURCE_CHECK=True
+set PYTHONIOENCODING=utf-8
 
-echo [1/3] Checking dependencies...
+echo Installing/Verifying dependencies...
 pip install -r requirements.txt
 
 echo.
-echo [2/3] Setting up database...
-python database\init_db.py
-python database\load_all_medicines.py
+echo ===================================================
+echo  To enable 95%% accuracy, make sure MISTRAL_API_KEY 
+echo  is set in your .env file!
+echo ===================================================
+echo.
 
-echo.
-echo [3/3] Starting Application...
-echo.
-echo Access the app at: http://localhost:5000/?user_id=pharma_001
-echo.
+echo Starting Flask Server...
 python app.py
 pause

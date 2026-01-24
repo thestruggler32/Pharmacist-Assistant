@@ -10,5 +10,17 @@
     "pharmacist_id": "test_pharma",
     "image_reference": "test_001",
     "timestamp": "2026-01-23T11:31:39.453029"
+  },
+  {
+    "original_ocr_text": "Paracetmol 500mg",
+    "corrected_fields": {
+      "medicine_name": "Paracetamol",
+      "strength": "500mg",
+      "dosage": "BID"
+    },
+    "original_confidence": 0.75,
+    "pharmacist_id": "test_pharma",
+    "image_reference": "test_001",
+    "timestamp": "2026-01-23T15:44:51.567505"
   }
 ]

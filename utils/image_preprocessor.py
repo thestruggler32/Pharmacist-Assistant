@@ -47,11 +47,29 @@ class ImagePreprocessor:
         """
         Main preprocessing pipeline with handwriting mode support
         """
-        # Load image
-        original_image = cv2.imread(image_path)
-        if original_image is None:
-            raise ValueError(f"Cannot read image from {image_path}")
         
+        # Load image with fallback
+        try:
+            # Try loading with OpenCV
+            original_image = cv2.imread(image_path)
+            
+            # Fallback to PIL if OpenCV fails
+            if original_image is None:
+                print(f"DEBUG: cv2.imread failed for {image_path}, trying PIL fallback...")
+                try:
+                    from PIL import Image
+                    pil_img = Image.open(image_path)
+                    original_image = cv2.cvtColor(np.array(pil_img), cv2.COLOR_RGB2BGR)
+                except Exception as e:
+                    print(f"DEBUG: PIL fallback also failed: {e}")
+                    raise ValueError(f"Cannot read image from {image_path}")
+            
+            print(f"DEBUG: Preprocessing Input shape: {original_image.shape}")
+            
+        except Exception as e:
+            print(f"ERROR: Failed to load image: {e}")
+            raise ValueError(f"Image loading failed: {e}")
+
         quality_report = {
             "original_size": original_image.shape[:2],
             "warnings": [],
@@ -73,6 +91,7 @@ class ImagePreprocessor:
             # Standard preprocessing
             processed = self._preprocess_standard(gray_image)
         
+        print(f"DEBUG: Preprocessing Output shape: {processed.shape}")
         return processed, quality_report
     
     def _preprocess_standard(self, gray_image: np.ndarray) -> np.ndarray:
@@ -143,6 +162,9 @@ class ImagePreprocessor:
     def _deskew(self, image: np.ndarray) -> np.ndarray:
         """
         Correct image rotation/skew
+        
+        IMPORTANT: Only corrects small skew angles (±15 degrees max).
+        Larger angles are likely misdetections and would incorrectly rotate the image.
         """
         try:
             # Find all non-zero points
@@ -158,8 +180,16 @@ class ImagePreprocessor:
                 else:
                     angle = -angle
                 
-                # Only deskew if angle is significant
+                # FIX: Limit deskew to ±15 degrees to prevent 90-degree misrotations
+                # Large angles are almost always misdetections from minAreaRect
+                MAX_DESKEW_ANGLE = 15.0
+                if abs(angle) > MAX_DESKEW_ANGLE:
+                    print(f"DEBUG: Skipping large deskew angle ({angle:.1f}°), likely misdetection")
+                    return image
+                
+                # Only deskew if angle is significant but not too large
                 if abs(angle) > 0.5:
+                    print(f"DEBUG: Applying deskew correction of {angle:.1f}°")
                     (h, w) = image.shape[:2]
                     center = (w // 2, h // 2)
                     M = cv2.getRotationMatrix2D(center, angle, 1.0)
@@ -169,7 +199,8 @@ class ImagePreprocessor:
                         borderMode=cv2.BORDER_REPLICATE
                     )
                     return rotated
-        except:
+        except Exception as e:
+            print(f"DEBUG: Deskew error: {e}")
             pass
         
         return image

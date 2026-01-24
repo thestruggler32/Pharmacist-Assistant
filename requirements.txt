@@ -1,7 +1,6 @@
 Flask==3.0.0
 opencv-python==4.9.0.80
-paddlepaddle==2.6.0
-paddleocr==2.7.0
+
 numpy==1.26.3
 python-dotenv==1.0.0
 Werkzeug==3.0.1
@@ -12,3 +11,7 @@ requests==2.31.0
 beautifulsoup4==4.12.3
 lxml==5.1.0
 PyPDF2==3.0.1
+
+mistralai>=1.0.0
+
+
