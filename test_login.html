@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Login API</title>
+</head>
+<body>
+    <h1>Backend API Test</h1>
+    
+    <h2>1. Test Health Check</h2>
+    <button onclick="testHealth()">Test Health</button>
+    <pre id="health-result"></pre>
+    
+    <h2>2. Test License Verification</h2>
+    <button onclick="testLicense()">Test License (VALID123)</button>
+    <pre id="license-result"></pre>
+    
+    <h2>3. Test Login</h2>
+    <button onclick="testLogin()">Test Login (pharmacist@test.com)</button>
+    <pre id="login-result"></pre>
+    
+    <script>
+        async function testHealth() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/health');
+                const data = await response.json();
+                document.getElementById('health-result').textContent = 
+                    `Status: ${response.status}\n` + JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('health-result').textContent = 
+                    'Error: ' + error.message;
+            }
+        }
+        
+        async function testLicense() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/verify-license', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ license_no: 'VALID123' })
+                });
+                const data = await response.json();
+                document.getElementById('license-result').textContent = 
+                    `Status: ${response.status}\n` + JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('license-result').textContent = 
+                    'Error: ' + error.message;
+            }
+        }
+        
+        async function testLogin() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: 'pharmacist@test.com', 
+                        password: 'password' 
+                    })
+                });
+                const data = await response.json();
+                document.getElementById('login-result').textContent = 
+                    `Status: ${response.status}\n` + JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('login-result').textContent = 
+                    'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
