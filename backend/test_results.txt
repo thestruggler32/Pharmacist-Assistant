@@ -1,0 +1,23 @@
+==================================================
+PHARMACIST ASSISTANT - API TESTS
+==================================================
+
+=== Test: Patient 1 Login ===
+Status: 200
+SUCCESS - Role: None, Name: None
+
+=== Test: Patient 2 Login ===
+Status: 200
+SUCCESS - Role: None, Name: None
+
+=== Test: Doctor Login ===
+Status: 200
+SUCCESS - Role: None, Name: None
+
+=== Test: Pharmacist Login ===
+Status: 200
+SUCCESS - Role: None, Name: None
+
+==================================================
+ALL TESTS COMPLETE
+==================================================

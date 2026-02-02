@@ -1,0 +1,465 @@
+{
+  "prescriptions": {
+    "fc0fa0ed-8518-4826-8233-7c5015ab9faa": {
+      "id": "fc0fa0ed-8518-4826-8233-7c5015ab9faa",
+      "image_url": "/static/uploads/fc0fa0ed-8518-4826-8233-7c5015ab9faa_WhatsApp_Image_2026-01-28_at_11.58.14_AM.jpeg",
+      "medicines": [
+        {
+          "confidence": 0.98,
+          "dosage": "Twice Daily",
+          "duration": "10 days",
+          "fuzzy_corrected": true,
+          "fuzzy_match_score": 1,
+          "medicine_name": "Zerodol-SP",
+          "original_ocr": "Zerodol-SP",
+          "original_text": "Tab Zerodol-SP 1-0-1 x 10",
+          "source": "gemini_2.5_pro",
+          "strength": ""
+        },
+        {
+          "confidence": 0.9,
+          "dosage": "Twice Daily",
+          "duration": "10 days",
+          "fuzzy_corrected": false,
+          "medicine_name": "Veleb ft",
+          "original_text": "Tab Veleb ft 1-0-1 x 10",
+          "source": "gemini_2.5_pro",
+          "strength": ""
+        },
+        {
+          "confidence": 0.89,
+          "dosage": "Twice Daily",
+          "duration": "10 days",
+          "fuzzy_corrected": true,
+          "fuzzy_match_score": 0.8,
+          "medicine_name": "Etosun-MR",
+          "original_ocr": "Etoshine-MR",
+          "original_text": "Tab Etoshine-MR 1-0-1 x 10",
+          "source": "gemini_2.5_pro",
+          "strength": ""
+        },
+        {
+          "confidence": 0.975,
+          "dosage": "Twice Daily",
+          "duration": "10 days",
+          "fuzzy_corrected": true,
+          "fuzzy_match_score": 1,
+          "medicine_name": "Pan-D",
+          "original_ocr": "Pan-D",
+          "original_text": "Tab Pan-D (B/F) 1-0-0 x 10",
+          "source": "gemini_2.5_pro",
+          "strength": ""
+        },
+        {
+          "confidence": 0.99,
+          "dosage": "",
+          "duration": "",
+          "fuzzy_corrected": false,
+          "medicine_name": "Crepe Bandage",
+          "original_text": "Crepe Bandage - 4\"",
+          "source": "gemini_2.5_pro",
+          "strength": "4\""
+        }
+      ],
+      "status": "approved",
+      "uploaded_by": "pharmacist@test.com",
+      "timestamp": "2026-02-01T23:05:16.239534",
+      "updated_at": "2026-02-01T23:06:01.411073",
+      "approved_by": "pharmacist@test.com",
+      "approved_at": "2026-02-01T23:06:01.411064"
+    },
+    "4ba0943c-45cd-4422-89f7-2eeb4039825b": {
+      "id": "4ba0943c-45cd-4422-89f7-2eeb4039825b",
+      "image_url": "/static/uploads/4ba0943c-45cd-4422-89f7-2eeb4039825b_115.jpg",
+      "medicines": [
+        {
+          "medicine_name": "Liposomal Amphotericin",
+          "strength": "50mg",
+          "dosage": "6 vials/day (300mg Once Daily)",
+          "duration": "",
+          "confidence": 0.95,
+          "original_text": "Inj LIPOSOMAL AMPHOTERICIN 50mg x 6vials [6 VIALS/day] (dose 300mg OD)",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        },
+        {
+          "medicine_name": "Amphotericin Conventional",
+          "strength": "50mg",
+          "dosage": "1 vial/day",
+          "duration": "",
+          "confidence": 0.9,
+          "original_text": "Inj AMPHOTERICIN CONVENTIONAL 50mg x 6-8vials [1 VIAL/day]",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        }
+      ],
+      "status": "pending",
+      "uploaded_by": "patient@test.com",
+      "timestamp": "2026-02-01T23:20:50.592300",
+      "updated_at": "2026-02-01T23:20:50.592334"
+    },
+    "3d23c094-7723-4fc8-ad3b-5dfb75ef5208": {
+      "id": "3d23c094-7723-4fc8-ad3b-5dfb75ef5208",
+      "patient_id": "doctor@test.com",
+      "issued_by": "doctor@test.com",
+      "type": "scanned",
+      "image_url": "/static/uploads/3d23c094-7723-4fc8-ad3b-5dfb75ef5208_115.jpg",
+      "medicines": [
+        {
+          "medicine_name": "Liposomal Amphotericin",
+          "strength": "50mg",
+          "dosage": "6 Vials/day (300mg Once Daily)",
+          "duration": "",
+          "confidence": 0.95,
+          "original_text": "Inj LIPOSOMAL AMPHOTERICIN 50mg x 6vials [6 VIALS/day] (dose 300mg OD)",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        },
+        {
+          "medicine_name": "Amphotericin Conventional",
+          "strength": "50mg",
+          "dosage": "1 Vial/day",
+          "duration": "",
+          "confidence": 0.95,
+          "original_text": "Inj AMPHOTERICIN CONVENTIONAL 50mg [1 VIAL/day]",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        }
+      ],
+      "status": "pending",
+      "uploaded_by": "doctor@test.com",
+      "timestamp": "2026-02-01T23:42:44.969046",
+      "updated_at": "2026-02-01T23:42:44.969088"
+    },
+    "b52cc24c-df5c-4a89-9b6f-8465241dab04": {
+      "id": "b52cc24c-df5c-4a89-9b6f-8465241dab04",
+      "patient_id": "patient1@test.com",
+      "issued_by": "doctor@test.com",
+      "type": "digital",
+      "medicines": [
+        {
+          "name": "Dolo 65-",
+          "dosage": "1-0-1",
+          "duration": "7 days",
+          "instructions": "Before Meals"
+        }
+      ],
+      "status": "pending",
+      "notes": "",
+      "timestamp": "2026-02-01T23:47:28.888115",
+      "image_url": null,
+      "doctor_name": "Dr. Aisha Patel",
+      "updated_at": "2026-02-01T23:47:28.888132"
+    },
+    "60a4ce98-a173-48a6-979a-1c29bb02703f": {
+      "id": "60a4ce98-a173-48a6-979a-1c29bb02703f",
+      "patient_id": "pharmacist@test.com",
+      "issued_by": "pharmacist@test.com",
+      "type": "scanned",
+      "image_url": "/static/uploads/60a4ce98-a173-48a6-979a-1c29bb02703f_115.jpg",
+      "medicines": [
+        {
+          "medicine_name": "Liposomal Amphotericin",
+          "strength": "50mg",
+          "dosage": "6 Vials per day",
+          "duration": "",
+          "confidence": 0.95,
+          "original_text": "Inj LIPOSOMAL AMPHOTERICIN 50mg x 6vials [6 VIALS/day] (dose 300mg OD)",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        },
+        {
+          "medicine_name": "Amphotericin Conventional",
+          "strength": "50mg",
+          "dosage": "1 Vial per day",
+          "duration": "",
+          "confidence": 0.95,
+          "original_text": "Inj AMPHOTERICIN CONVENTIONAL 50mg x 1vials [1 VIAL/day]",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        }
+      ],
+      "status": "pending",
+      "uploaded_by": "pharmacist@test.com",
+      "timestamp": "2026-02-01T23:48:40.582720",
+      "updated_at": "2026-02-01T23:48:40.582754"
+    },
+    "b91fe6fd-fed8-4730-bde9-972d0b1da1d9": {
+      "id": "b91fe6fd-fed8-4730-bde9-972d0b1da1d9",
+      "patient_id": "patient1@test.com",
+      "issued_by": "doctor@test.com",
+      "type": "digital",
+      "medicines": [
+        {
+          "name": "A",
+          "dosage": "B",
+          "duration": "C",
+          "instructions": "D"
+        }
+      ],
+      "status": "pending",
+      "notes": "",
+      "timestamp": "2026-02-01T23:56:20.582589",
+      "image_url": null,
+      "doctor_name": "Dr. Aisha Patel",
+      "updated_at": "2026-02-01T23:56:20.582607"
+    },
+    "1e7e8829-9dd0-40c2-b1dc-15578714cf28": {
+      "id": "1e7e8829-9dd0-40c2-b1dc-15578714cf28",
+      "patient_id": "patient1@test.com",
+      "issued_by": "doctor@test.com",
+      "type": "scanned",
+      "image_url": "/static/uploads/1e7e8829-9dd0-40c2-b1dc-15578714cf28_115.jpg",
+      "medicines": [
+        {
+          "medicine_name": "Liposomal Amphotericin",
+          "strength": "50mg",
+          "dosage": "6 vials per day",
+          "duration": "",
+          "confidence": 0.95,
+          "original_text": "Inj LIPOSOMAL AMPHOTERICIN 50mg x 6 vials [6 VIALS/day] (dose 300mg OD)",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        },
+        {
+          "medicine_name": "Amphotericin Conventional",
+          "strength": "50mg",
+          "dosage": "1 vial per day",
+          "duration": "",
+          "confidence": 0.95,
+          "original_text": "Inj AMPHOTERICIN CONVENTIONAL 50mg [1 VIAL/day]",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        }
+      ],
+      "status": "pending",
+      "uploaded_by": "doctor@test.com",
+      "timestamp": "2026-02-01T23:57:35.917491",
+      "updated_at": "2026-02-01T23:57:35.917530"
+    },
+    "e3964ff8-bf27-4c8d-8ae4-c9f8ef64c76a": {
+      "id": "e3964ff8-bf27-4c8d-8ae4-c9f8ef64c76a",
+      "patient_id": "patient1@test.com",
+      "issued_by": "patient1@test.com",
+      "type": "scanned",
+      "image_url": "/static/uploads/e3964ff8-bf27-4c8d-8ae4-c9f8ef64c76a_115.jpg",
+      "medicines": [
+        {
+          "medicine_name": "Liposomal Amphotericin",
+          "strength": "300mg",
+          "dosage": "Once Daily",
+          "duration": "",
+          "confidence": 0.95,
+          "original_text": "Inj LIPOSOMAL AMPHOTERICIN 50mg x 6vials [6 VIALS/day] (dose 300mg OD)",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        },
+        {
+          "medicine_name": "Amphotericin Conventional",
+          "strength": "50mg",
+          "dosage": "Once Daily",
+          "duration": "",
+          "confidence": 0.95,
+          "original_text": "Inj AMPHOTERICIN CONVENTIONAL 50mg [1 VIAL/day]",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        }
+      ],
+      "status": "pending",
+      "uploaded_by": "patient1@test.com",
+      "timestamp": "2026-02-01T23:59:20.804556",
+      "updated_at": "2026-02-01T23:59:20.804601"
+    },
+    "feda0e71-99d6-44ce-acfc-0c6487f36dd6": {
+      "id": "feda0e71-99d6-44ce-acfc-0c6487f36dd6",
+      "patient_id": "patient2@test.com",
+      "issued_by": "doctor@test.com",
+      "type": "scanned",
+      "image_url": "/static/uploads/feda0e71-99d6-44ce-acfc-0c6487f36dd6_115.jpg",
+      "medicines": [
+        {
+          "medicine_name": "Abf Injection",
+          "strength": "50mg",
+          "dosage": "6 Vials/day (300mg Once Daily)",
+          "duration": "",
+          "confidence": 0.884090909090909,
+          "original_text": "Inj LIPOSOMAL AMPHOTERICIN 50mg x 6 vials [6 VIALS/day] (dose 300mg OD)",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": true,
+          "original_ocr": "Liposomal Amphotericin Injection",
+          "fuzzy_match_score": 0.8181818181818181
+        },
+        {
+          "medicine_name": "Abf Injection",
+          "strength": "50mg",
+          "dosage": "1 Vial/day",
+          "duration": "",
+          "confidence": 0.8590909090909091,
+          "original_text": "Inj AMPHOTERICIN CONVENTIONAL 50mg x 6-8 vials [1 VIAL/day]",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": true,
+          "original_ocr": "Amphotericin Conventional Injection",
+          "fuzzy_match_score": 0.8181818181818181
+        }
+      ],
+      "status": "pending",
+      "uploaded_by": "doctor@test.com",
+      "timestamp": "2026-02-02T00:21:26.891282",
+      "updated_at": "2026-02-02T00:21:26.891325"
+    },
+    "bd878a28-28b9-4316-9ac1-77ec26d6f9c7": {
+      "id": "bd878a28-28b9-4316-9ac1-77ec26d6f9c7",
+      "patient_id": "patient3@test.com",
+      "issued_by": "pharmacist@test.com",
+      "type": "scanned",
+      "image_url": "/static/uploads/bd878a28-28b9-4316-9ac1-77ec26d6f9c7_115.jpg",
+      "medicines": [
+        {
+          "confidence": 0.975,
+          "dosage": "Once Daily",
+          "duration": "",
+          "fuzzy_corrected": true,
+          "fuzzy_match_score": 1,
+          "medicine_name": "Liposomal Amphotericin B (1mg)",
+          "original_ocr": "Liposomal Amphotericin",
+          "original_text": "Inj LIPOSOMAL AMPHOTERICIN 50mg x 6vials, [6 VIALS/day] (dose 300mg OD)",
+          "source": "gemini_2.5_pro",
+          "strength": "300mg"
+        },
+        {
+          "confidence": 0.825,
+          "dosage": "Once Daily",
+          "duration": "",
+          "fuzzy_corrected": true,
+          "fuzzy_match_score": 0.75,
+          "medicine_name": "Amphotericin B (1mg)",
+          "original_ocr": "Amphotericin Conventional",
+          "original_text": "Inj AMPHOTERICIN CONVENTIONAL 50mg [1 VIAL/day]",
+          "source": "gemini_2.5_pro",
+          "strength": "50mg"
+        }
+      ],
+      "status": "approved",
+      "uploaded_by": "pharmacist@test.com",
+      "timestamp": "2026-02-02T12:08:13.325981",
+      "updated_at": "2026-02-02T12:09:11.949413",
+      "approved_by": "pharmacist@test.com",
+      "approved_at": "2026-02-02T12:09:11.949408"
+    },
+    "527d2bc3-4446-426b-8fd5-4a60a7ca456c": {
+      "id": "527d2bc3-4446-426b-8fd5-4a60a7ca456c",
+      "patient_id": "patient2@test.com",
+      "issued_by": "patient2@test.com",
+      "type": "scanned",
+      "image_url": "/static/uploads/527d2bc3-4446-426b-8fd5-4a60a7ca456c_handwritten-prescription-1568x1254.jpg",
+      "medicines": [
+        {
+          "medicine_name": "Aulang",
+          "strength": "10mg",
+          "dosage": "Once Daily",
+          "duration": "7 days",
+          "confidence": 0.9,
+          "original_text": "Aulang 10mg x ODC -> 7/12",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        },
+        {
+          "medicine_name": "Nebilong Tablet",
+          "strength": "5mg",
+          "dosage": "Once Daily",
+          "duration": "7 days",
+          "confidence": 0.925,
+          "original_text": "Nebilong 5mg as -> 7/12",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": true,
+          "original_ocr": "Nebilong",
+          "fuzzy_match_score": 1.0
+        },
+        {
+          "medicine_name": "Dejelo",
+          "strength": "30mg",
+          "dosage": "Once Daily at Night",
+          "duration": "10 days",
+          "confidence": 0.9,
+          "original_text": "Dejelo 30mg x Nocti -> 10/7",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        },
+        {
+          "medicine_name": "Precob 750mcg/75mg Tablet",
+          "strength": "75mg",
+          "dosage": "Once Daily at Night",
+          "duration": "7 days",
+          "confidence": 0.95,
+          "original_text": "Precob - 75mg x Nocti -> 7/12",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": true,
+          "original_ocr": "Precob",
+          "fuzzy_match_score": 1.0
+        },
+        {
+          "medicine_name": "Advantee",
+          "strength": "",
+          "dosage": "Once Daily",
+          "duration": "2 weeks",
+          "confidence": 0.8,
+          "original_text": "Advantee T + an -> 2 wk",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": false
+        },
+        {
+          "medicine_name": "Volini",
+          "strength": "",
+          "dosage": "Apply as needed",
+          "duration": "",
+          "confidence": 0.925,
+          "original_text": "Volini gel (appns) 2 hr",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": true,
+          "original_ocr": "Volini gel",
+          "fuzzy_match_score": 1.0
+        },
+        {
+          "medicine_name": "Galvus Met",
+          "strength": "",
+          "dosage": "Twice Daily",
+          "duration": "7 days",
+          "confidence": 0.8500000000000001,
+          "original_text": "Gabvis Met T + B-D -> 7/12",
+          "source": "gemini_2.5_pro",
+          "fuzzy_corrected": true,
+          "original_ocr": "Gabvis Met",
+          "fuzzy_match_score": 0.8
+        }
+      ],
+      "status": "pending",
+      "uploaded_by": "patient2@test.com",
+      "timestamp": "2026-02-02T12:15:20.035313",
+      "updated_at": "2026-02-02T12:15:20.036270"
+    }
+  },
+  "approvals": {},
+  "annotations": {
+    "fc0fa0ed-8518-4826-8233-7c5015ab9faa": [
+      {
+        "annotations": [
+          {
+            "x": 264.6097106933594,
+            "y": 277.4607849121094,
+            "width": 167,
+            "height": 46,
+            "text": "Anvith",
+            "confidence": 1
+          }
+        ],
+        "annotated_by": "pharmacist@test.com",
+        "created_at": "2026-02-01T23:06:25.747109"
+      },
+      {
+        "annotations": [],
+        "annotated_by": "pharmacist@test.com",
+        "created_at": "2026-02-01T23:06:37.084814"
+      }
+    ]
+  }
+}

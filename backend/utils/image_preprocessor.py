@@ -5,6 +5,7 @@ Enhanced Image Preprocessing for Messy Handwritten Prescriptions
 import cv2
 import numpy as np
 from typing import Tuple, Dict, Any
+from pathlib import Path
 import os
 
 

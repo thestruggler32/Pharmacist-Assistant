@@ -3,7 +3,7 @@ import os
 from werkzeug.security import generate_password_hash
 
 
-def init_database(db_path='database/pharmacy.db'):
+def init_database(db_path='backend/database/pharmacy.db'):
     """Initialize SQLite database with required tables"""
     os.makedirs(os.path.dirname(db_path), exist_ok=True)
     
@@ -47,6 +47,7 @@ def init_database(db_path='database/pharmacy.db'):
             brand_name TEXT NOT NULL,
             strength TEXT NOT NULL,
             region TEXT DEFAULT 'Karnataka',
+            city TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')

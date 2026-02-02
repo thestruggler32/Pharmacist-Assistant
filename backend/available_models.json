@@ -1,0 +1,122 @@
+[
+  {
+    "name": "models/gemini-2.5-flash",
+    "display_name": "Gemini 2.5 Flash"
+  },
+  {
+    "name": "models/gemini-2.5-pro",
+    "display_name": "Gemini 2.5 Pro"
+  },
+  {
+    "name": "models/gemini-2.0-flash",
+    "display_name": "Gemini 2.0 Flash"
+  },
+  {
+    "name": "models/gemini-2.0-flash-001",
+    "display_name": "Gemini 2.0 Flash 001"
+  },
+  {
+    "name": "models/gemini-2.0-flash-exp-image-generation",
+    "display_name": "Gemini 2.0 Flash (Image Generation) Experimental"
+  },
+  {
+    "name": "models/gemini-2.0-flash-lite-001",
+    "display_name": "Gemini 2.0 Flash-Lite 001"
+  },
+  {
+    "name": "models/gemini-2.0-flash-lite",
+    "display_name": "Gemini 2.0 Flash-Lite"
+  },
+  {
+    "name": "models/gemini-exp-1206",
+    "display_name": "Gemini Experimental 1206"
+  },
+  {
+    "name": "models/gemini-2.5-flash-preview-tts",
+    "display_name": "Gemini 2.5 Flash Preview TTS"
+  },
+  {
+    "name": "models/gemini-2.5-pro-preview-tts",
+    "display_name": "Gemini 2.5 Pro Preview TTS"
+  },
+  {
+    "name": "models/gemma-3-1b-it",
+    "display_name": "Gemma 3 1B"
+  },
+  {
+    "name": "models/gemma-3-4b-it",
+    "display_name": "Gemma 3 4B"
+  },
+  {
+    "name": "models/gemma-3-12b-it",
+    "display_name": "Gemma 3 12B"
+  },
+  {
+    "name": "models/gemma-3-27b-it",
+    "display_name": "Gemma 3 27B"
+  },
+  {
+    "name": "models/gemma-3n-e4b-it",
+    "display_name": "Gemma 3n E4B"
+  },
+  {
+    "name": "models/gemma-3n-e2b-it",
+    "display_name": "Gemma 3n E2B"
+  },
+  {
+    "name": "models/gemini-flash-latest",
+    "display_name": "Gemini Flash Latest"
+  },
+  {
+    "name": "models/gemini-flash-lite-latest",
+    "display_name": "Gemini Flash-Lite Latest"
+  },
+  {
+    "name": "models/gemini-pro-latest",
+    "display_name": "Gemini Pro Latest"
+  },
+  {
+    "name": "models/gemini-2.5-flash-lite",
+    "display_name": "Gemini 2.5 Flash-Lite"
+  },
+  {
+    "name": "models/gemini-2.5-flash-image",
+    "display_name": "Nano Banana"
+  },
+  {
+    "name": "models/gemini-2.5-flash-preview-09-2025",
+    "display_name": "Gemini 2.5 Flash Preview Sep 2025"
+  },
+  {
+    "name": "models/gemini-2.5-flash-lite-preview-09-2025",
+    "display_name": "Gemini 2.5 Flash-Lite Preview Sep 2025"
+  },
+  {
+    "name": "models/gemini-3-pro-preview",
+    "display_name": "Gemini 3 Pro Preview"
+  },
+  {
+    "name": "models/gemini-3-flash-preview",
+    "display_name": "Gemini 3 Flash Preview"
+  },
+  {
+    "name": "models/gemini-3-pro-image-preview",
+    "display_name": "Nano Banana Pro"
+  },
+  {
+    "name": "models/nano-banana-pro-preview",
+    "display_name": "Nano Banana Pro"
+  },
+  {
+    "name": "models/gemini-robotics-er-1.5-preview",
+    "display_name": "Gemini Robotics-ER 1.5 Preview"
+  },
+  {
+    "name": "models/gemini-2.5-computer-use-preview-10-2025",
+    "display_name": "Gemini 2.5 Computer Use Preview 10-2025"
+  },
+  {
+    "name": "models/deep-research-pro-preview-12-2025",
+    "display_name": "Deep Research Pro Preview (Dec-12-2025)"
+  }
+]

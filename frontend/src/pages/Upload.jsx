@@ -1,8 +1,7 @@
-import { useState, useCallback } from 'react';
-// import { useDropzone } from 'react-dropzone'; 
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Upload as UploadIcon, FileText, Check, Loader2 } from 'lucide-react';
+import { Upload as UploadIcon, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { uploadPrescription } from '@/services/api';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +10,16 @@ export default function Upload() {
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const [uploading, setUploading] = useState(false);
+    const [selectedPatient, setSelectedPatient] = useState('');
+    const [user, setUser] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        }
+    }, []);
 
     const handleFileChange = (e) => {
         const selected = e.target.files[0];
@@ -23,15 +31,25 @@ export default function Upload() {
 
     const handleUpload = async () => {
         if (!file) return;
+
+        // Validate patient selection for doctors/pharmacists
+        if (user && (user.role === 'doctor' || user.role === 'pharmacist') && !selectedPatient) {
+            alert('Please select a patient to assign this prescription to');
+            return;
+        }
+
         setUploading(true);
 
         try {
             const formData = new FormData();
             formData.append('file', file);
+            if (selectedPatient) {
+                formData.append('patient_email', selectedPatient);
+            }
             const res = await uploadPrescription(formData);
             navigate(`/review/${res.data.id}`);
         } catch (err) {
-            alert("Upload failed");
+            alert("Upload failed: " + (err.response?.data?.msg || err.message));
         } finally {
             setUploading(false);
         }
@@ -76,6 +94,26 @@ export default function Upload() {
                             </div>
                         )}
                     </div>
+
+                    {/* Patient Selector for Doctors/Pharmacists */}
+                    {user && (user.role === 'doctor' || user.role === 'pharmacist') && (
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium block">Assign to Patient *</label>
+                            <select
+                                value={selectedPatient}
+                                onChange={(e) => setSelectedPatient(e.target.value)}
+                                className="w-full p-2 border rounded-md bg-background"
+                            >
+                                <option value="">Select a patient...</option>
+                                <option value="patient1@test.com">John Doe (patient1@test.com)</option>
+                                <option value="patient2@test.com">Jane Smith (patient2@test.com)</option>
+                                <option value="patient3@test.com">Rajesh Kumar (patient3@test.com)</option>
+                            </select>
+                            <p className="text-xs text-muted-foreground">
+                                Select which patient this prescription is for
+                            </p>
+                        </div>
+                    )}
 
                     <div className="flex justify-end space-x-2">
                         <Button variant="outline" onClick={() => { setFile(null); setPreview(null); }}>Clear</Button>

@@ -1,0 +1,63 @@
+{
+  "prescriptions": {
+    "146cfe3a-a674-4f52-97db-a257aa652b69": {
+      "id": "146cfe3a-a674-4f52-97db-a257aa652b69",
+      "patient_id": "patient1@test.com",
+      "issued_by": "pharmacist@test.com",
+      "type": "scanned",
+      "image_url": "/static/uploads/146cfe3a-a674-4f52-97db-a257aa652b69_115.jpg",
+      "medicines": [
+        {
+          "confidence": 0.95,
+          "dosage": "6 vials per day",
+          "duration": "",
+          "fuzzy_corrected": false,
+          "medicine_name": "Liposomal Amphotericin",
+          "original_text": "Inj LIPOSOMAL AMPHOTERICIN 50mg x 6 vials [6 VIALS/day] (dose 300mg OD)",
+          "source": "gemini_2.5_pro",
+          "strength": "50mg"
+        },
+        {
+          "confidence": 0.95,
+          "dosage": "1 vial per day",
+          "duration": "",
+          "fuzzy_corrected": false,
+          "medicine_name": "Amphotericin Conventional",
+          "original_text": "Inj AMPHOTERICIN CONVENTIONAL 50mg x 6-8 vials [1 VIAL/day]",
+          "source": "gemini_2.5_pro",
+          "strength": "50mg"
+        }
+      ],
+      "status": "approved",
+      "uploaded_by": "pharmacist@test.com",
+      "timestamp": "2026-02-02T09:05:28.171504",
+      "updated_at": "2026-02-02T09:05:40.900837",
+      "approved_by": "pharmacist@test.com",
+      "approved_at": "2026-02-02T09:05:40.900825"
+    },
+    "b57639d1-fb8d-41a3-a363-89fc15066592": {
+      "id": "b57639d1-fb8d-41a3-a363-89fc15066592",
+      "patient_id": "patient1@test.com",
+      "issued_by": "doctor@test.com",
+      "type": "digital",
+      "medicines": [
+        {
+          "dosage": "1-0-1",
+          "duration": "10 days",
+          "instructions": "Before Meals",
+          "name": "Dolo 65-"
+        }
+      ],
+      "status": "approved",
+      "notes": "",
+      "timestamp": "2026-02-02T09:06:24.874357",
+      "image_url": null,
+      "doctor_name": "Dr. Aisha Patel",
+      "updated_at": "2026-02-02T09:07:42.577597",
+      "approved_by": "pharmacist@test.com",
+      "approved_at": "2026-02-02T09:07:42.577587"
+    }
+  },
+  "approvals": {},
+  "annotations": {}
+}

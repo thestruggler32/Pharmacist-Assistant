@@ -1,0 +1,53 @@
+
+# Doctor Digital Prescription Issuance
+@app.route('/api/prescriptions/issue', methods=['POST'])
+@jwt_required()
+def issue_prescription():
+    """Doctor issues digital prescription to a patient"""
+    current_user = get_jwt_identity()
+    claims = get_jwt()
+    
+    # RBAC: Only doctors can issue prescriptions
+    if claims.get('role') != 'doctor':
+        return jsonify({"msg": "Unauthorized - Only doctors can issue prescriptions"}), 403
+    
+    data = request.json
+    patient_email = data.get('patient_email')
+    medicines = data.get('medicines', [])
+    notes = data.get('notes', '')
+    
+    if not patient_email:
+        return jsonify({"msg": "Patient email required"}), 400
+    
+    # Verify patient exists
+    if patient_email not in USERS or USERS[patient_email]['role'] != 'patient':
+        return jsonify({"msg": "Invalid patient email"}), 400
+    
+    prescription_id = str(uuid.uuid4())
+    prescription_data = {
+        'id': prescription_id,
+        'patient_id': patient_email,      # For the patient
+        'issued_by': current_user,         # By this doctor
+        'type': 'digital',                 # Not scanned
+        'medicines': medicines,
+        'status': 'pending',
+        'notes': notes,
+        'timestamp': datetime.now().isoformat(),
+        'image_url': None,  # No image for digital prescriptions
+        'doctor_name': claims.get('name', 'Doctor')
+    }
+    
+    PRESCRIPTIONS[prescription_id] = prescription_data
+    
+    if prescription_db:
+        try:
+            prescription_db.save_prescription(prescription_id, prescription_data)
+            print(f"✓ Doctor issued prescription {prescription_id} to {patient_email}", flush=True)
+        except Exception as e:
+            print(f"⚠ Failed to save to prescription_db: {e}", flush=True)
+    
+    return jsonify({
+        "msg": "Prescription issued successfully",
+        "prescription_id": prescription_id,
+        "prescription": prescription_data
+    })

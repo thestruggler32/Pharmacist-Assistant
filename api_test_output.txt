@@ -1,0 +1,48 @@
+======================================================================
+DETAILED Google API Key Test
+======================================================================
+Key: AIzaSyCnPtPG9vH6V0FF...
+
+[TEST 1] Listing available models...
+✓ API authentication successful!
+
+Found 9 models:
+  - gemini-2.5-flash
+    Methods: generateContent, countTokens, createCachedContent, batchGenerateContent
+  - gemini-2.5-pro
+    Methods: generateContent, countTokens, createCachedContent, batchGenerateContent
+  - gemini-2.0-flash
+    Methods: generateContent, countTokens, createCachedContent, batchGenerateContent
+  - gemini-2.0-flash-001
+    Methods: generateContent, countTokens, createCachedContent, batchGenerateContent
+  - gemini-2.0-flash-lite-001
+    Methods: generateContent, countTokens, createCachedContent, batchGenerateContent
+  - gemini-2.0-flash-lite
+    Methods: generateContent, countTokens, createCachedContent, batchGenerateContent
+  - gemini-2.5-flash-lite
+    Methods: generateContent, countTokens, createCachedContent, batchGenerateContent
+  - embedding-001
+    Methods: embedContent
+  - text-embedding-004
+    Methods: embedContent
+
+[TEST 2] Testing text generation...
+Trying models that support 'generateContent'...
+
+[gemini-pro] Skipped - not in available models
+[gemini-1.5-pro] Skipped - not in available models
+[gemini-1.5-flash] Skipped - not in available models
+[gemini-1.5-pro-latest] Skipped - not in available models
+
+======================================================================
+PARTIAL SUCCESS - Authentication works, Generation failed
+======================================================================
+
+Diagnosis:
+  ✓ API key is valid for authentication
+  ✗ Cannot generate content with any model
+
+Possible causes:
+  1. Generative Language API not enabled in Google Cloud
+  2. Billing not enabled on the project
+  3. API key restrictions preventing generative endpoints

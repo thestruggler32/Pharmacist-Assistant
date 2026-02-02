@@ -1,0 +1,14 @@
+
+# Regional Medicine Alternatives API
+@app.route('/api/medicines/<name>/alternatives', methods=['GET'])
+@jwt_required()
+def get_medicine_alternatives(name):
+    """Get regional alternatives for a medicine"""
+    try:
+        from utils.regional_alternatives import regional_mapper
+        user_region = request.args.get('region', 'Karnataka')
+        result = regional_mapper.find_alternatives(name, user_region)
+        return jsonify(result)
+    except Exception as e:
+        print(f"Regional alternatives error: {e}", flush=True)
+        return jsonify({'error': str(e), 'alternatives': []}), 500
